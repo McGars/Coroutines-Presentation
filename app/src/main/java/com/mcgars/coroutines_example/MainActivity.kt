@@ -22,7 +22,11 @@ class MainActivity : AppCompatActivity() {
             ExampleCoroutine3(progress),
             ExampleRxJava3(progress),
             ExampleCoroutine4(progress),
-            ExampleRxJava4(progress)
+            ExampleRxJava4(progress),
+            ExampleCoroutine5(progress),
+            ExampleRxJava5(progress),
+            ExampleCoroutine6(progress),
+            ExampleCoroutine7(progress)
         )
     }
 
@@ -36,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun fillButtons() {
         examples.forEachIndexed { index, example ->
-            addButton (index, example.name())
+            addButton(index, example.name())
         }
     }
 

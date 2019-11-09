@@ -17,9 +17,12 @@ class ExampleCoroutine2(private val progress: Progress) : PresenterCoroutine(pro
 
     override fun run() = launch {
         progress.show()
-        val list = withContext(Dispatchers.IO) { dataInteractor.getPaymentsWithError() }
+        val list = withContext(Dispatchers.IO) {
+            dataInteractor.getPaymentsWithError()
+        }
         progress.showToast(list)
         progress.hide()
+
     }
 
 }

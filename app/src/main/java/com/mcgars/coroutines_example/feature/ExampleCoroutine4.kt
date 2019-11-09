@@ -7,8 +7,9 @@ import com.mcgars.coroutines_example.model.Payment
 import com.mcgars.coroutines_example.repository.DataRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.rx2.await
+import kotlinx.coroutines.rx2.awaitSingle
 import kotlinx.coroutines.withContext
+import kotlin.time.ExperimentalTime
 
 class ExampleCoroutine4(private val progress: Progress) : PresenterCoroutine(progress) {
 
@@ -16,11 +17,12 @@ class ExampleCoroutine4(private val progress: Progress) : PresenterCoroutine(pro
 
     override fun name(): String = "Coroutine, rx to coroutine"
 
+    @ExperimentalTime
     override fun run() = launch {
         progress.show()
 
         val payments: List<Payment> = withContext(Dispatchers.IO) {
-            dataInteractor.getPaymentsRx().await()
+            dataInteractor.getPaymentsRx().awaitSingle()
         }
 
         progress.showToast(payments)

@@ -10,18 +10,22 @@ abstract class PresenterCoroutine(
     private val progress: Progress
 ) : CoroutineScope, ExampleRunnuble {
 
-    private val job: Job = Job()
+    private val job: Job = SupervisorJob()
 
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main + CoroutineExceptionHandler { _, throwable ->
-            if (throwable !is CancellationException) errorHandler(throwable)
-        }
+    override val coroutineContext: CoroutineContext = job + Dispatchers.Main + CoroutineExceptionHandler { _, throwable ->
+        if (throwable !is CancellationException) errorHandler(throwable)
+    }
 
     override fun type(): EXAMPLE = EXAMPLE.COROUTINE
 
     open fun errorHandler(throwable: Throwable) {
+        throwable.printStackTrace()
         progress.hide()
         progress.showToast("Error happened")
+    }
+
+    fun cancelChildJob() {
+        job.cancelChildren()
     }
 
     override fun onDestroy() {

@@ -10,6 +10,7 @@ class DataRepository {
     @WorkerThread
     fun getNewPayments(): List<Payment> {
         Thread.sleep(1000)
+        println("DataRepository: getNewPayments, thread: " + Thread.currentThread())
         return listOf()
     }
 
@@ -22,6 +23,7 @@ class DataRepository {
     @WorkerThread
     fun getOldPayments(): List<Payment> {
         Thread.sleep(500)
+        println("DataRepository: getOldPayments, thread: " + Thread.currentThread())
         return listOf()
     }
 

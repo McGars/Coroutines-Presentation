@@ -2,11 +2,11 @@ package com.mcgars.coroutines_example.interactor
 
 import com.mcgars.coroutines_example.model.Payment
 import com.mcgars.coroutines_example.repository.DataRepository
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Function3
 import kotlinx.coroutines.*
-import kotlin.coroutines.coroutineContext
 
 
 class DataInteractor(
@@ -16,27 +16,37 @@ class DataInteractor(
     /**
      * Load via coroutines, success load
      */
-    fun getPayments(): List<Payment> {
+    suspend fun getPayments(): List<Payment> = coroutineScope {
+        val itemsFromCache = getCache()
+        if (itemsFromCache.isNotEmpty()) return@coroutineScope itemsFromCache
+
         val newPayment = dataRepository.getNewPayments()
         val oldPayment = dataRepository.getOldPayments()
         val additionList = listOf(Payment(1, "From Coroutine"))
-        return mergeListOf(oldPayment, newPayment, additionList)
+        val items = mergeListOf(oldPayment, newPayment, additionList)
+        saveToCache(items)
+        items
     }
 
     /**
      * Load via rxJava, success load
      */
-    fun getPaymentsRx(): Single<List<Payment>> {
-        return Single.zip(
-            Single.fromCallable { dataRepository.getNewPayments() },
-            Single.fromCallable { dataRepository.getOldPayments() },
-            Single.fromCallable { listOf(Payment(1, "From Rx")) },
-            Function3 <List<Payment>, List<Payment>, List<Payment>, List<Payment>> {
-                    newPayment,
-                    oldPayment,
-                    additionList ->
-                mergeListOf(newPayment, oldPayment, additionList)
-            }
+    fun getPaymentsRx(): Observable<List<Payment>> {
+        return Observable.concat<List<Payment>>(
+            Observable.fromCallable { getCache() }
+                .flatMap {
+                    if (it.isEmpty()) Observable.empty()
+                    else Observable.just(it)
+                },
+            Observable.zip(
+                Observable.fromCallable { dataRepository.getNewPayments() },
+                Observable.fromCallable { dataRepository.getOldPayments() },
+                Observable.fromCallable { listOf(Payment(1, "From Rx")) },
+                Function3<List<Payment>, List<Payment>, List<Payment>, List<Payment>>
+                { newPayment, oldPayment, additionList ->
+                    mergeListOf(newPayment, oldPayment, additionList)
+                }
+            ).doOnNext { saveToCache(it) }
         )
     }
 
@@ -50,29 +60,43 @@ class DataInteractor(
     }
 
     /**
-     * Load via rxJava, error load
+     * Load via rx, error load
      */
     fun getPaymentsErrorRx(): Single<List<Payment>> {
         return Single.zip(
             Single.fromCallable { dataRepository.getNewPaymentsWithException() },
             Single.fromCallable { dataRepository.getOldPayments() },
-            BiFunction<List<Payment>, List<Payment>, List<Payment>> { newPayment, oldPayment ->
+            BiFunction { newPayment, oldPayment ->
                 mergeListOf(newPayment, oldPayment)
             }
         )
     }
 
     /**
-     * Load via coroutines, success load
+     * Load via coroutines
+     * @return deferred async data
      */
-    suspend fun getPaymentsAsync(): Deferred<List<Payment>> = GlobalScope.async(coroutineContext) {
-        listOf(Payment(1, "From Coroutine"))
+    fun getPaymentsAsync(): Deferred<List<Payment>> = GlobalScope.async {
+        val newPayment = dataRepository.getNewPayments()
+        val oldPayment = dataRepository.getOldPayments()
+        val additionList = listOf(Payment(1, "From Coroutine"))
+        mergeListOf(oldPayment, newPayment, additionList)
     }
+
+
 
     private fun <T> mergeListOf(vararg items: List<T>): List<T> {
         val result = mutableListOf<T>()
         items.forEach { result += it }
         return result
+    }
+
+    private fun saveToCache(items: List<Payment>) {
+        println("items saved to cache")
+    }
+
+    private fun getCache(): List<Payment> {
+        return emptyList()
     }
 
 }
