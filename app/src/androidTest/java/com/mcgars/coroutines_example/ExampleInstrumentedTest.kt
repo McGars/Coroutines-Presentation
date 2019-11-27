@@ -28,6 +28,17 @@ class ExampleInstrumentedTest : BaseTest() {
     }
 
     @Test
+    fun clickOnFirstElementInListViaRxJava() {
+        onView(withText(startsWith("2."))).perform(click())
+        // <-- here showing the loader,
+        //     and waiting automatically while loader will be hidden before going further
+        // Rx works too 😤
+        onView(withText(containsString("Payment")))
+            .inRoot(withDecorView(not(`is`(activityRule.activity.window.decorView))))
+            .check(matches(isDisplayed()))
+    }
+
+    @Test
     fun clickOnFirstElementInListAndWait() {
         onView(withText(startsWith("1."))).perform(click())
 
