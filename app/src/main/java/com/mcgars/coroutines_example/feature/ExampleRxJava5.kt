@@ -1,20 +1,17 @@
 package com.mcgars.coroutines_example.feature
 
+import com.mcgars.coroutines_example.core.IProgress
 import com.mcgars.coroutines_example.core.PresenterRxJava
-import com.mcgars.coroutines_example.core.Progress
 import com.mcgars.coroutines_example.interactor.DataInteractor
 import com.mcgars.coroutines_example.model.Payment
 import com.mcgars.coroutines_example.repository.DataRepository
 import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
-import kotlin.time.ExperimentalTime
-import kotlin.time.measureTime
 
 
-class ExampleRxJava5(private val progress: Progress) : PresenterRxJava(progress) {
+class ExampleRxJava5(private val progress: IProgress) : PresenterRxJava(progress) {
 
     private val dataInteractor = DataInteractor(DataRepository())
 

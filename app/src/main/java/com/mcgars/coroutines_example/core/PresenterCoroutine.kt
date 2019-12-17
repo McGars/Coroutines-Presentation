@@ -7,12 +7,12 @@ import kotlin.coroutines.CoroutineContext
 
 
 abstract class PresenterCoroutine(
-    private val progress: Progress
+    private val progress: IProgress
 ) : CoroutineScope, ExampleRunnuble {
 
     private val job: Job = SupervisorJob()
 
-    override val coroutineContext: CoroutineContext = job + Dispatchers.Main + CoroutineExceptionHandler { _, throwable ->
+    override val coroutineContext: CoroutineContext = job + DispatcherProvider.MAIN + CoroutineExceptionHandler { _, throwable ->
         if (throwable !is CancellationException) errorHandler(throwable)
     }
 

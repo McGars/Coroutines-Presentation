@@ -1,7 +1,7 @@
 package com.mcgars.coroutines_example.feature
 
+import com.mcgars.coroutines_example.core.IProgress
 import com.mcgars.coroutines_example.core.PresenterCoroutine
-import com.mcgars.coroutines_example.core.Progress
 import com.mcgars.coroutines_example.interactor.DataInteractor
 import com.mcgars.coroutines_example.repository.DataRepository
 import kotlinx.coroutines.Dispatchers
@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class ExampleCoroutine2(private val progress: Progress) : PresenterCoroutine(progress) {
+class ExampleCoroutine2(private val progress: IProgress) : PresenterCoroutine(progress) {
 
     private val dataInteractor = DataInteractor(DataRepository())
 

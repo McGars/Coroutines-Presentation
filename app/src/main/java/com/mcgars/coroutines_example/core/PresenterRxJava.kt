@@ -5,7 +5,7 @@ import com.mcgars.coroutines_example.feature.ExampleRunnuble
 import io.reactivex.disposables.CompositeDisposable
 
 
-abstract class PresenterRxJava(private val progress: Progress) : ExampleRunnuble {
+abstract class PresenterRxJava(private val progress: IProgress) : ExampleRunnuble {
 
     protected val compositeDisposable = CompositeDisposable()
 

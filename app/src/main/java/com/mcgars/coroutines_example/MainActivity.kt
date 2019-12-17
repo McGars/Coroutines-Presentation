@@ -5,13 +5,14 @@ import android.os.Bundle
 import android.view.Gravity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import com.mcgars.coroutines_example.core.IProgress
 import com.mcgars.coroutines_example.core.Progress
 import com.mcgars.coroutines_example.feature.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val progress by lazy { Progress(root) }
+    private val progress: IProgress by lazy { Progress(root) }
 
     private val examples: Array<ExampleRunnuble> by lazy {
         arrayOf(

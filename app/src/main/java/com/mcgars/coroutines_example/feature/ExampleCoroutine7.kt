@@ -1,7 +1,7 @@
 package com.mcgars.coroutines_example.feature
 
+import com.mcgars.coroutines_example.core.IProgress
 import com.mcgars.coroutines_example.core.PresenterCoroutine
-import com.mcgars.coroutines_example.core.Progress
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
 
-class ExampleCoroutine7(private val progress: Progress) : PresenterCoroutine(progress) {
+class ExampleCoroutine7(private val progress: IProgress) : PresenterCoroutine(progress) {
 
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://google.com")

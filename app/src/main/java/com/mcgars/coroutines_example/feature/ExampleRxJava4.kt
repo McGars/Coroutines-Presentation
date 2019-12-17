@@ -1,7 +1,7 @@
 package com.mcgars.coroutines_example.feature
 
+import com.mcgars.coroutines_example.core.IProgress
 import com.mcgars.coroutines_example.core.PresenterRxJava
-import com.mcgars.coroutines_example.core.Progress
 import com.mcgars.coroutines_example.interactor.DataInteractor
 import com.mcgars.coroutines_example.repository.DataRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -12,7 +12,7 @@ import kotlinx.coroutines.rx2.rxSingle
 import kotlin.coroutines.CoroutineContext
 
 
-class ExampleRxJava4(private val progress: Progress) : PresenterRxJava(progress), CoroutineScope {
+class ExampleRxJava4(private val progress: IProgress) : PresenterRxJava(progress), CoroutineScope {
 
     private val job: Job = Job()
 

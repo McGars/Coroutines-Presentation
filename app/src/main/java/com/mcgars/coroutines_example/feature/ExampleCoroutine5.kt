@@ -1,12 +1,12 @@
 package com.mcgars.coroutines_example.feature
 
+import com.mcgars.coroutines_example.core.IProgress
 import com.mcgars.coroutines_example.core.PresenterCoroutine
-import com.mcgars.coroutines_example.core.Progress
 import com.mcgars.coroutines_example.interactor.DataInteractor
 import com.mcgars.coroutines_example.repository.DataRepository
 import kotlinx.coroutines.*
 
-class ExampleCoroutine5(private val progress: Progress) : PresenterCoroutine(progress) {
+class ExampleCoroutine5(private val progress: IProgress) : PresenterCoroutine(progress) {
 
     private val dataInteractor = DataInteractor(DataRepository())
 

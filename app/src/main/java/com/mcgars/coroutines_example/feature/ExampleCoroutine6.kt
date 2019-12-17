@@ -1,10 +1,10 @@
 package com.mcgars.coroutines_example.feature
 
+import com.mcgars.coroutines_example.core.IProgress
 import com.mcgars.coroutines_example.core.PresenterCoroutine
-import com.mcgars.coroutines_example.core.Progress
 import kotlinx.coroutines.*
 
-class ExampleCoroutine6(private val progress: Progress) : PresenterCoroutine(progress) {
+class ExampleCoroutine6(private val progress: IProgress) : PresenterCoroutine(progress) {
 
     override fun name(): String = "Coroutine, fill list, 1 element throw exception"
 

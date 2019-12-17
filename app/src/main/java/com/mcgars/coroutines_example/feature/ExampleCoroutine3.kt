@@ -1,14 +1,13 @@
 package com.mcgars.coroutines_example.feature
 
+import com.mcgars.coroutines_example.core.IProgress
 import com.mcgars.coroutines_example.core.PresenterCoroutine
-import com.mcgars.coroutines_example.core.Progress
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class ExampleCoroutine3(private val progress: Progress) : PresenterCoroutine(progress) {
+class ExampleCoroutine3(private val progress: IProgress) : PresenterCoroutine(progress) {
 
     private val channel = Channel<String>()
 
